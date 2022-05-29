@@ -1,11 +1,17 @@
-# fiber1
+# Fiber1 Demo
+
+This is example how to do these things:
 
 1. Web page
 2. Form
 3. API / CRUD 
 4. MySQL
 5. Fiber without ORM
+6. DockerTest
+7. AutoGold
 
+without clean architecture, but the business logic is pure from serialization.
+the model itself depends on real persistence and tested using dockertest, so it should always works.
 
 # Dependencies
 
