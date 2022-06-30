@@ -1,6 +1,6 @@
 # Fiber1 Demo
 
-This is example of [how to structure your golang project](https://kokizzu.blogspot.com/2022/05/how-to-structure-layer-your-golang-project.html) article with fiber and standard mysql (you can change it to whatever framework and persistence libraries you like, the structure should still be similar).
+This is example of [how to structure your golang project](https://kokizzu.blogspot.com/2022/05/how-to-structure-layer-your-golang-project.html) article with fiber and standard mysql (you can change it to whatever framework and persistence libraries you like, the structure should still be similar). This example doesn't do clean architecture aproach, because we use the database provider directly instead of using interface or function injection.
 
 This is example how to do these things:
 
