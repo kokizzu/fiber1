@@ -7,10 +7,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func ConnectMysql(connStr string) *sqlx.DB {
+func ConnectMysql(connStr string, silent ...bool) *sqlx.DB {
 	db, err := sqlx.Connect("mysql", connStr)
 	if err != nil {
-		log.Printf("error connecting to mysql: %v", err)
+		if len(silent) == 0 || !silent[0] {
+			log.Printf("error connecting to mysql: %v", err)
+		}
 		return nil
 	}
 	return db

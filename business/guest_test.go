@@ -9,6 +9,7 @@ import (
 
 	"fiber1/config"
 	"fiber1/model"
+	"github.com/go-sql-driver/mysql"
 
 	"github.com/stretchr/testify/assert"
 
@@ -18,6 +19,10 @@ import (
 )
 
 var testDb *sqlx.DB
+
+type NullLogger struct{}
+
+func (NullLogger) Print(...interface{}) {}
 
 func TestMain(m *testing.M) {
 	pool, err := dockertest.NewPool("")
@@ -29,11 +34,16 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not start resource: %s", err)
 	}
 
+	// hide annoying connection warning
+	_ = mysql.SetLogger(mysql.Logger(NullLogger{}))
+
 	var connStr string
+	trial := 0
 	if err := pool.Retry(func() error {
-		log.Println("Checking whether mariadb is up..")
+		trial++
+		log.Printf("Checking whether mariadb is up.. %d", trial)
 		connStr = fmt.Sprintf("root:secret@(127.0.0.1:%s)/mysql", resource.GetPort("3306/tcp"))
-		testDb = config.ConnectMysql(connStr)
+		testDb = config.ConnectMysql(connStr, true)
 		if testDb != nil {
 			return nil
 		}
@@ -42,10 +52,14 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not connect to database: %s", err)
 	}
 
+	logger := mysql.Logger(log.New(os.Stderr, "[mysql] ", log.Ldate|log.Ltime|log.Lshortfile))
+	_ = mysql.SetLogger(logger)
 	log.Println("Mariadb is up, start testing..")
 	log.Println(connStr)
+
 	code := m.Run()
 
+	log.Println("Testing done, clean up Mariadb..")
 	if err := pool.Purge(resource); err != nil {
 		log.Fatalf("Could not purge resource: %s", err)
 	}
