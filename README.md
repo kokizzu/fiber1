@@ -31,7 +31,13 @@ mysql -u root -h 127.0.0.1 -p
 CREATE DATABASE test1;
 ```
 
-# Updating test
+# Run tests
+
+```
+make test
+```
+
+# Updating test gold
 
 ```shell
 cd business
