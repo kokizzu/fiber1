@@ -12,8 +12,8 @@ This is example how to do these things:
 6. DockerTest
 7. AutoGold
 
-This aproach doesn't do clean architecture, but the business logic is pure/should not contain transport/serialization.
-the model itself depends on real persistence and tested using dockertest, so it should always works and testable even without function injection or dependency injection. The cons of this aproach is the test is slower because it have to spawn a docker.
+This aproach doesn't do clean architecture (since the persistence layer is not injected), but the business logic is pure/should not contain transport/serialization.
+the model itself depends on real persistence and tested using dockertest, so it should always works and testable even without function injection or dependency injection. The cons of this aproach is the test is slower because it have to spawn a docker fist.
 
 # Dependencies
 
