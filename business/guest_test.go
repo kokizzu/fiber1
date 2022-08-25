@@ -31,6 +31,7 @@ func TestMain(m *testing.M) {
 
 	var connStr string
 	if err := pool.Retry(func() error {
+		log.Println("Checking whether mariadb is up..")
 		connStr = fmt.Sprintf("root:secret@(127.0.0.1:%s)/mysql", resource.GetPort("3306/tcp"))
 		testDb = config.ConnectMysql(connStr)
 		if testDb != nil {
@@ -41,6 +42,7 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not connect to database: %s", err)
 	}
 
+	log.Println("Mariadb is up, start testing..")
 	log.Println(connStr)
 	code := m.Run()
 

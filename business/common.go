@@ -14,3 +14,11 @@ func (o *CommonOut) SetError(statusCode int, errMsg string) {
 	o.StatusCode = statusCode
 	o.ErrorMsg = errMsg
 }
+
+type CommonOutput interface {
+	Common() *CommonOut
+}
+
+func (o CommonOut) Common() *CommonOut {
+	return &o
+}

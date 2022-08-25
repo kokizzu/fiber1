@@ -5,3 +5,7 @@ setup:
 
 dev:
 	air 
+
+test:
+	go install gotest.tools/gotestsum@latest
+	gotestsum --format testname ./...

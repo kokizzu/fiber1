@@ -29,28 +29,14 @@ func main() {
 
 	app := fiber.New()
 
-	app.Post(business.Guest_LoginPath, func(c *fiber.Ctx) error {
-		in := business.Guest_LoginIn{}
-		if err := c.BodyParser(&in); err != nil {
-			return err
-		}
-		out := guest.Login(&in)
-		return presentation.RenderRestApi(c, out, out.CommonOut)
-	})
+	presentation.HandlePost[business.Guest_LoginIn](app, business.Guest_LoginPath, guest.Login)
 	presentation.HandleGet(app, business.Guest_LoginPath)
 
 	app.Get(business.Guest_LoginPath, func(c *fiber.Ctx) error {
 		return presentation.RenderHtml(c, business.Guest_LoginPath, nil)
 	})
 
-	app.Post(business.Guest_RegisterPath, func(c *fiber.Ctx) error {
-		in := business.Guest_RegisterIn{}
-		if err := c.BodyParser(&in); err != nil {
-			return err
-		}
-		out := guest.Register(&in)
-		return presentation.RenderRestApi(c, out, out.CommonOut)
-	})
+	presentation.HandlePost[business.Guest_RegisterIn](app, business.Guest_RegisterPath, guest.Register)
 	presentation.HandleGet(app, business.Guest_RegisterPath)
 
 	log.Fatal(app.Listen(":3000"))
