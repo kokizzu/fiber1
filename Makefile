@@ -1,16 +1,25 @@
+GO ?= go
+GOVULNCHECK ?= govulncheck
+CMD ?=
 
-.PHONY: setup dev test verify-dependency-security
+.PHONY: setup dev test verify-dependency-security run vulncheck
 
 
 setup:
-	go install github.com/cosmtrek/air@latest
+	$(GO) install github.com/air-verse/air@latest
 
 dev:
 	air 
 
 test:
-	go install gotest.tools/gotestsum@latest
-	gotestsum --format testname ./...
+	$(GO) test ./...
 
 verify-dependency-security:
 	bash ./scripts/verify-dependency-security.sh
+
+vulncheck:
+	$(GOVULNCHECK) ./...
+
+run:
+	@test -n "$(CMD)" || (echo "usage: make run CMD='go test ./...'" >&2; exit 2)
+	$(CMD)

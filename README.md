@@ -37,6 +37,13 @@ CREATE DATABASE test1;
 make test
 ```
 
+## Maintenance checklist
+
+- [x] Go runtime updated to 1.26.5.
+- [x] Direct Go dependencies refreshed and module files tidied.
+- [x] `make test` runs the Go test suite through the project Makefile.
+- [x] `make verify-dependency-security` and `make vulncheck` check dependency security.
+
 # Updating test gold
 
 ```shell

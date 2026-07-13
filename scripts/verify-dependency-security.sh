@@ -37,7 +37,7 @@ check_min_version() {
 
 go_modules="$(mktemp)"
 trap 'rm -f "$go_modules"' EXIT
-go list -m all > "$go_modules"
+go list -m -f '{{.Path}} {{if .Replace}}{{.Replace.Version}}{{else}}{{.Version}}{{end}}' all > "$go_modules"
 
 go_version() {
   local module="$1"
@@ -54,10 +54,7 @@ check_go_min() {
   fi
 }
 
-if grep -q '^github.com/docker/docker ' "$go_modules"; then
-  fail "github.com/docker/docker is still in selected Go module graph"
-fi
-
+check_go_min github.com/docker/docker v28.5.2
 check_go_min github.com/docker/cli v29.6.1
 check_go_min github.com/gofiber/fiber/v2 v2.52.13
 check_go_min github.com/opencontainers/runc v1.3.6
